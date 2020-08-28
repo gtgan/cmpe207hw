@@ -7,11 +7,9 @@
 // and there's some logging to stderr, but don't count on the latter to be
 // useful.
 //
-// Below is the sort of mess that I get when I start at the top and just type
-// for well over a hundred lines, slap in a few comments, and call it a day.
-// Enter if you dare.
-//
-// – Gregory Gan
+// Authors:
+// Gregory Gan
+// ...
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -164,8 +162,7 @@ int main(int argc, char **argv)
             address = arg;
             ipv = ip_ver(arg);
             // If it's not a valid IPv4 address, assume IPv6.
-            // No, this is not a good way of doing it.  That isn't terribly
-            // important for this assignment, though.
+            // Less than ideal.
             fprintf(stderr, "  Detected IPv%d\n", ipv);
         }
         free(arg);
