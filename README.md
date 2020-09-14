@@ -13,7 +13,5 @@ returned data.
 Homework 2
 ----------
 
-Build and demonstrate a TCP server implemented with the BSD socket interface.
-
-Nothing too complicated, ‘Hello World’ in ASCII art is acceptable
-Submit: a Word document with some screenshots of the output, and a link to your source code
+Build and demonstrate a TCP server implemented with the BSD socket interface
+that displays simple ASCII art.
