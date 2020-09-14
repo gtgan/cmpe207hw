@@ -3,7 +3,6 @@ CmpE 207 HW
 
 Homework for CmpE 207 with Andrew Bond.
 
-
 Homework 1
 ----------
 
