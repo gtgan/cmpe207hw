@@ -11,7 +11,7 @@
 
 int main() {
 
-    //initialize message
+    //initialize message "HELLO" ASCII art
     char server_message[256] = "|  | |-- |   |    |-|  \n|--| |-- |   |   |   | \n|  | |-- |__ |__  |-|  \n";
     
     //create a socket
