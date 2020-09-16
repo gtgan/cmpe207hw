@@ -14,3 +14,8 @@ Homework 2
 
 Build and demonstrate a TCP server implemented with the BSD socket interface
 that displays simple ASCII art.
+
+Homework 3
+----------
+
+Chat app between different sockets.
