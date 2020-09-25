@@ -30,7 +30,9 @@ int main() {
     listen(server_socket, 5);
 
     int client_socket = accept(server_socket, NULL, NULL);
-    
+    if (client_socket == -1){
+        printf("There was an error accepting remote socket.\n");
+    }
     //send the message
     send(client_socket, server_message, sizeof(server_message), 0);
 
