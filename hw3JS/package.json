@@ -1,0 +1,15 @@
+{
+  "name": "hw3js",
+  "version": "1.0.0",
+  "description": "socket chat using Node.js, express, and socket.io",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Karanbir Bains",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.2",
+    "npm": "^6.14.8"
+  }
+}
