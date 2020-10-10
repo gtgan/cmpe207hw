@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Test Page</title>
+<meta charset="UTF-8"/>
+<meta name="description" content="Test page for Redis caching example"/>
+<meta name="author" content="Gregory Gan"/>
+<style>
+table {
+  border-collapse: collapse;
+}
+td {
+  padding: 2pt 4pt;
+  border-width: 0.5pt 0;
+  border-color: black;
+  border-style: solid;
+}
+</style>
+</head>
+<body>
+<h1>Test Page</h1>
+<p>The server is up and running!  Leave a comment?</p>
+<hr/>
+<p>
+  <form action="/" method="post">
+    <input type="text" id="name" name="name" placeholder="Your name"/><br/>
+    <textarea id="comment" name="comment" placeholder="Comment"></textarea></br>
+    <input type="submit" value="Post comment"/>
+  </form>
+  <div id="err" style="display:none"></div>
+</p><p>
+  <table><tbody>
+  </tbody></table>
+</p>
+</body>
+</html>
