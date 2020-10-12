@@ -6,8 +6,13 @@ of the Socket.IO website.
 
 Please refer to it to learn how to run this application.
 
-You can also spin up a free Heroku dyno to test it out:
+To run the application:
+1. Make sure that you have node installed.
+2. go in to the directory in the terminal and run the command 'node index.js'
+3. open up a web browser and goto 'localhost:3000'
+4. to see the multi user capabilities open another tab of 'localhost:3000'
+5. get to chatting!
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/socketio/chat-example)
 
-Besides, the application is deployed on [Now](https://zeit.co/now): https://socketio-chat-example.now.sh/
+
+
