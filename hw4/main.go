@@ -24,6 +24,7 @@ import (
     "io/ioutil"
     "net/http"
     "os/signal"
+    "sync/atomic"
     "github.com/go-redis/redis/v8"
 )
 
@@ -37,6 +38,8 @@ type handler struct {
     ctx context.Context
     rdb redis.Client
 }
+
+var toSave uint32 = 0
 
 // originally intended to store numerically in SQL; didn't feel like rewriting
 // all the code when I noticed that Redis could be my database
@@ -75,7 +78,7 @@ func homepage(
             return err
         } else {
             // default expiration time is probably fine
-            err := rdb.SetNX(ctx, "home", val, 10 * time.Minute).Err()
+            err := rdb.SetNX(ctx, "home", val, 5 * time.Minute).Err()
             if err != nil {
                 // couldn't cache, but can still serve page
                 fmt.Fprintf(os.Stdout, "%v\n", err)
@@ -96,6 +99,7 @@ func homepage(
         t := time.Now().UTC().Format(timeFormat)
         key := t + " " + name
         rdb.HSet(ctx, "comment", key, comment)
+        atomic.AddUint32(&toSave, 1)
     } else if name != "" || comment != "" {
         // empty name or comment, but not both
         val = strings.Replace(
@@ -148,8 +152,12 @@ func (hand *handler) ServeHTTP(writer http.ResponseWriter, req *http.Request) {
 func save(ctx context.Context, rdb redis.Client, delay time.Duration) {
     for {
         time.Sleep(delay)
-        status := rdb.BgSave(ctx)
-        fmt.Println(status)
+        nToSave := atomic.SwapUint32(&toSave, 0)
+        if (nToSave > 0) {
+            fmt.Printf("%d new comment(s) since last save.\n", nToSave)
+            status := rdb.BgSave(ctx)
+            fmt.Println(status)
+        }
     }
 }
 
@@ -210,6 +218,6 @@ func main() {
     }
 
     // start save and listen routines
-    go save(ctx, *rdb, time.Minute)
+    go save(ctx, *rdb, 10 * time.Second)
     server.ListenAndServe()
 }
