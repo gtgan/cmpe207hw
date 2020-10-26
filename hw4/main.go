@@ -43,6 +43,7 @@ var toSave uint32 = 0
 
 // originally intended to store numerically in SQL; didn't feel like rewriting
 // all the code when I noticed that Redis could be my database
+// (I also forgot that SQL has a datetime type)
 const timeFormat string = "20060102150405.000"
 
 func parseComment(key string, value string) (time.Time, string, string, error) {
@@ -149,7 +150,12 @@ func (hand *handler) ServeHTTP(writer http.ResponseWriter, req *http.Request) {
     }
 }
 
-func save(ctx context.Context, rdb redis.Client, delay time.Duration) {
+func save(
+    ctx context.Context, rdb redis.Client,
+    minDelay time.Duration, maxDelay time.Duration,
+    increaseThreshold uint32, decreaseThreshold uint32,
+) {
+    delay := minDelay
     for {
         time.Sleep(delay)
         nToSave := atomic.SwapUint32(&toSave, 0)
@@ -157,6 +163,12 @@ func save(ctx context.Context, rdb redis.Client, delay time.Duration) {
             fmt.Printf("%d new comment(s) since last save.\n", nToSave)
             status := rdb.BgSave(ctx)
             fmt.Println(status)
+        }
+        // naive adjustment assumes write rate changes smoothly
+        if (nToSave >= decreaseThreshold && delay > minDelay) {
+            delay /= 2
+        } else if (nToSave <= increaseThreshold && delay < maxDelay) {
+            delay *= 2
         }
     }
 }
@@ -218,6 +230,6 @@ func main() {
     }
 
     // start save and listen routines
-    go save(ctx, *rdb, 10 * time.Second)
+    go save(ctx, *rdb, 675 * time.Millisecond, 10 * time.Second, 0, 128)
     server.ListenAndServe()
 }
